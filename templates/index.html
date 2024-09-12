@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diabetic Retinopathy Prediction</title>
+    <style>
+        body{
+            background-color: aquamarine;
+            padding-top: 90px;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            
+            
+        }
+        h1{
+            margin-bottom: 50px;
+        }
+        button{
+            height: 30px;
+            width: 110px;
+            color: #ffffff;
+            background-color: black;
+            border-radius: 10px;
+            border-width: 0px;
+
+        }
+        #imageUpload{
+            color: black;
+        }
+        #result{
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Diabetic Retinopathy Prediction</h1>
+
+    <form id="uploadForm" enctype="multipart/form-data">
+        <input type="file" id="imageUpload" accept="image/*">
+        <button type="submit">Upload</button>
+    </form>
+    <div id="result"></div>
+
+    <script>
+        document.getElementById('uploadForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const formData = new FormData();
+            const fileInput = document.getElementById('imageUpload');
+            formData.append('image', fileInput.files[0]);
+
+            const response = await fetch('/predict', {
+                method: 'POST',
+                body: formData
+            });
+            const result = await response.json();
+
+            document.getElementById('result').innerText = result.prediction;
+        });
+    </script>
+</body>
+</html>
